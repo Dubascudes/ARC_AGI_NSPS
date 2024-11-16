@@ -1,0 +1,36 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+from GridTools.Entity import Entity
+
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+
+# Create a working grid
+working_grid = input_grid
+
+# Get all entities on the grid
+entities = GridUtils.get_isolated_entities(input_grid)
+
+# Iterate over entities and draw a cell outside each bounding corner
+for entity in entities:
+    # Get the bounding box of the entity
+    min_x, min_y, max_x, max_y = entity.get_bounds()
+
+    # Assign colors for corners (wrap around 1-4)
+    corner_colors = [1, 2, 3, 4]
+
+    # Define corners outside the bounding box
+    corners = [
+        (min_x - 1, min_y - 1),  # Top-left corner
+        (min_x - 1, max_y + 1),  # Top-right corner
+        (max_x + 1, min_y - 1),  # Bottom-left corner
+        (max_x + 1, max_y + 1),  # Bottom-right corner
+    ]
+
+    # Draw each corner with its corresponding color
+    for idx, (x, y) in enumerate(corners):
+        # Ensure the cell is within the grid bounds
+        if 0 <= x < working_grid.rows and 0 <= y < working_grid.cols:
+            working_grid.set_cell(x, y, corner_colors[idx])
+
+# Define output_grid (required by the server)
+output_grid = working_grid

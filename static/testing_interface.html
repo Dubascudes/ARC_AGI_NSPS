@@ -6,11 +6,15 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="js/common.js"></script>
-        <script src="js/testing_interface.js"></script>
-
-        <link rel="stylesheet" type="text/css" href="css/common.css">
-        <link rel="stylesheet" type="text/css" href="css/testing_interface.css">
+        <script src="static/js/common.js"></script>
+        <script src="static/js/testing_interface.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.13/ace.js" integrity="sha512-Q4bgg0hNVq8xQj8idY68dGc88DKgHzUSeZIlW2r7G82zYBlckcI6z01xGkWf57XOPNf1cV7A9z0tnfiX7vb0hw==" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.0/mode/python/python.min.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="static/css/common.css">
+        <link rel="stylesheet" type="text/css" href="static/css/testing_interface.css">
 
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -123,6 +127,26 @@
                     <div id="error_display"></div>
                     <div id="info_display"></div>
                 </div>
+            </div>
+            <div id="code_editor_container"></div>
+                <h3>Python Code Editor</h3>
+                <div id="python-editor" style="border:1px solid #ccc; height:300px;"></div>
+
+                <script>
+                var editor = CodeMirror(document.getElementById("python-editor"), {
+                    lineNumbers: true,
+                    mode: "python",
+                    theme: "default",
+                });
+                </script>
+
+                <!-- <div id="python-editor" contenteditable="true" style="border:1px solid #ccc; padding:10px; min-height:200px;"> -->
+
+                <button onclick="executeCode()">Run Code</button>
+                <div id="output_display" style="margin-top: 20px; font-family: monospace; background-color: #f0f0f0; padding: 10px; border: 1px solid #ddd;">
+                    Output will appear here.
+                </div>
+                
             </div>
         </div>
     </body>

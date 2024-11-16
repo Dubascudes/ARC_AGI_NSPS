@@ -1,0 +1,34 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+
+# Create a working grid
+working_grid = input_grid
+
+# Get all entities grouped by color
+entities = GridUtils.get_all_entities_by_color(input_grid)
+
+# Iterate over all colors in the grid (excluding the background color 0)
+for c in range(1, 9):  # Assuming colors range from 1 to 8
+    left_side = []
+    right_side = []
+    
+    # Separate entities into left and right side groups
+    for color_e in entities[c]:
+        for cell in color_e.cells:
+            x, y = cell.position
+            if y == 0:  # Left side
+                left_side.append((x, y))
+            elif y == working_grid.cols - 1:  # Right side
+                right_side.append((x, y))
+    
+    # Match cells at the same height (row) and draw a line
+    for left_cell in left_side:
+        for right_cell in right_side:
+            if left_cell[0] == right_cell[0]:  # Same height (row)
+                # Use the draw_line method with start and end points
+                working_grid.draw_line(c, start_x=left_cell[0], start_y=left_cell[1], end_x=right_cell[0], end_y=right_cell[1])
+
+# Define output_grid (required by the server)
+output_grid = working_grid

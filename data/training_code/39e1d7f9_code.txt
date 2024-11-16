@@ -1,0 +1,30 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+from GridTools.Entity import Entity
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+
+# Create a working grid
+working_grid = input_grid
+
+is_subdiv, grid_color, grid_rows, grid_cols = working_grid.is_subdivision_valid()
+
+working_grid = working_grid.grid_to_subgrid()
+
+all_entities = GridUtils.get_isolated_entities(working_grid)
+
+pattern = [entity if len(entity.cells) > 1 else 0 for entity in all_entities]
+
+pattern = next((item for item in pattern if not isinstance(item, int)), None)
+
+isolated = GridUtils.get_isolated_cells(working_grid)
+
+print(pattern)
+
+for entity in isolated:
+  single_cell_location = entity.get_bounds()
+  x, y, _, _ = single_cell_location
+  working_grid.draw_entity_at_point(pattern, (x, y))
+
+
+working_grid = working_grid.subgrid_to_grid(grid_rows, grid_cols, line_color=grid_color)
+output_grid = working_grid

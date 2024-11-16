@@ -173,6 +173,52 @@ function loadTaskFromFile(e) {
     reader.readAsText(file);
 }
 
+//MY ADDITION START
+
+
+function executeCode() {
+    let code = editor.getValue();
+    let inputGridData = CURRENT_INPUT_GRID.grid;
+    $.ajax({
+        url: '/execute_code',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            code: code,
+            input_grid: inputGridData
+        }),
+        success: function(response) {
+            let outputGridData = response.output_grid;
+            // Update CURRENT_OUTPUT_GRID
+            CURRENT_OUTPUT_GRID = new Grid(outputGridData.length, outputGridData[0].length, outputGridData);
+            syncFromDataGridToEditionGrid();  // Refresh the display
+        
+            // Display any print output from the code execution
+            if (response.print_output) {
+                $('#output_display').text(response.print_output);
+            } else {
+                $('#output_display').text("No output.");
+            }
+        
+            infoMsg("Code executed successfully.");
+        },
+        
+        error: function(xhr, status, error) {
+            let errorMsgContent = "Error executing code:\n";
+            if (xhr.responseJSON) {
+                errorMsgContent += xhr.responseJSON.error + "\n" + xhr.responseJSON.traceback;
+            } else {
+                errorMsgContent += xhr.responseText;
+            }
+            errorMsg(errorMsgContent);
+        }
+    });
+}
+
+
+
+//MY ADDITION END
+
 function randomTask() {
     var subset = "training";
     $.getJSON("https://api.github.com/repos/fchollet/ARC/contents/data/" + subset, function(tasks) {
@@ -309,6 +355,19 @@ $(document).ready(function () {
         if (event.keyCode == 13) {
             resizeOutputGrid();
         }
+    });
+
+    // Initialize Ace Editor
+    var editor = ace.edit("code_editor");
+    editor.session.setMode("ace/mode/python");
+    editor.setTheme("ace/theme/github");
+    editor.session.setTabSize(4);
+    editor.session.setUseSoftTabs(true);
+    window.editor = editor;  // Make it globally accessible
+
+    // Load initial code from initial_code.txt
+    $.get('initial_code.txt', function(data) {
+        editor.setValue(data, -1);  // -1 moves cursor to the start
     });
 
     $('body').keydown(function(event) {

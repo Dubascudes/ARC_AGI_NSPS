@@ -1,0 +1,11 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+from GridTools.Entity import Entity
+
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+# Create a working grid
+working_grid = input_grid
+
+working_grid = GridTransformation.rotate_90_counterclockwise(working_grid)
+
+output_grid = working_grid

@@ -1,0 +1,16 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+
+purple_cells_entity = input_grid.select_cells_by_color(6)
+
+red_cells_entity = purple_cells_entity.fill_by_color(2, 6)
+
+input_grid.draw_entity(red_cells_entity)
+
+# Create a working grid
+working_grid = input_grid
+
+
+output_grid = working_grid

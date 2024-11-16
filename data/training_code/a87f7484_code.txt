@@ -1,0 +1,13 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+
+input_grid = Grid.from_list(input_grid_data)
+
+entities = GridUtils.get_all_entities_by_shape(input_grid)
+
+for e in entities:
+  if len(e) == 1:
+    print(e)
+    working_grid = Grid.from_entity(e[0])
+ 
+
+output_grid = working_grid

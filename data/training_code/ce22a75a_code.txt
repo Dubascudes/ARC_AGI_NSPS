@@ -1,0 +1,17 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+
+
+# Create a working grid
+working_grid = input_grid
+
+grey_squares = GridUtils.get_isolated_cells(working_grid)
+
+for g in grey_squares:
+  x1, y1, x2, y2 = g.get_bounds()
+  blue_box = GridUtils.box(1, (x1-1, y1-1))
+  working_grid.draw_entity(blue_box)
+
+output_grid = working_grid

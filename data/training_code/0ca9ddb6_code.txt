@@ -1,0 +1,41 @@
+from GridTools import Grid, GridUtils, GridTransformation, Entity
+from GridTools.Entity import Entity
+from GridTools.GridUtils import plus_sign, corners
+from copy import deepcopy
+
+# Convert input data to Grid object
+input_grid = Grid.from_list(input_grid_data)
+
+# Create a working grid
+working_grid = input_grid
+
+# Get all blue (color 1) and red (color 2) entities
+all_blue = GridUtils.get_entities_by_color(working_grid, 1)
+all_red = GridUtils.get_entities_by_color(working_grid, 2)
+
+# Create a deep copy of all_blue to avoid modification
+og_all_blue = deepcopy(all_blue)
+print(og_all_blue)
+
+# Draw orange plus signs (color 3) at each blue cell
+for blue_entity in all_blue:
+    for cell in blue_entity.cells:
+        x, y = cell.position
+        plus = plus_sign(color=3, position=(x - 1, y - 1))  # Offset to center the plus sign
+        working_grid.draw_entity(plus)
+
+# Draw yellow corners (color 4) at each red cell
+for red_entity in all_red:
+    for cell in red_entity.cells:
+        x, y = cell.position
+        corner = corners(color=4, position=(x - 1, y - 1))  # Offset to center the corners
+        working_grid.draw_entity(corner)
+
+print(og_all_blue)
+
+# Draw the original blue entities back onto the grid
+for blue_entity in og_all_blue:
+    working_grid.draw_entity(blue_entity)
+
+# Define output_grid (required by the server)
+output_grid = working_grid
